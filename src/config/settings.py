@@ -92,8 +92,7 @@ CACHE_TTL_DESTINATION = int(os.getenv("CACHE_TTL_DESTINATION", str(24 * 3600)))
 # =========================
 
 # Comma-separated origins allowed to call this API from a browser. Leave unset
-# when the frontend is proxied onto the same origin (see vercel.json), which
-# keeps the session cookie first-party.
+# when the frontend is served on the same origin, which keeps the session cookie first-party.
 CORS_ORIGINS = [
     origin.strip()
     for origin in os.getenv("CORS_ORIGINS", "").split(",")

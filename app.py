@@ -43,8 +43,8 @@ app = FastAPI(
 )
 
 
-# Only needed when the browser talks to this API on a different origin. With
-# the Vercel rewrite the frontend is same-origin, so this stays inactive.
+# Only needed when the browser talks to this API on a different origin.
+# When the app serves the frontend directly, this stays inactive.
 if CORS_ORIGINS:
     app.add_middleware(
         CORSMiddleware,
