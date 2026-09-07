@@ -10,7 +10,10 @@ from src.agents.hotel_agent import hotel_agent
 from src.agents.itinerary_agent import itinerary_agent
 from src.agents.weather_agent import weather_agent
 from src.clients.checkpointer import get_checkpointer
+<<<<<<< HEAD
 from src.config import settings
+=======
+>>>>>>> 6139a41007e8ebd425a8fc868f356828dfc9dfcf
 from src.config.session import require, resolve_database_url
 from src.graph.state import TravelState
 
@@ -49,6 +52,7 @@ def get_travel_graph():
 
     require("DATABASE_URL")
 
+<<<<<<< HEAD
     url = resolve_database_url()
     try:
         return _compiled_graph(url)
@@ -61,3 +65,6 @@ def get_travel_graph():
             except Exception:
                 pass
         raise error
+=======
+    return _compiled_graph(resolve_database_url())
+>>>>>>> 6139a41007e8ebd425a8fc868f356828dfc9dfcf

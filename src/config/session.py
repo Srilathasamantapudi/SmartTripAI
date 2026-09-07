@@ -63,11 +63,19 @@ def use_credentials(credentials: Credentials | None):
 # =========================
 
 def resolve_groq_api_key() -> str | None:
+<<<<<<< HEAD
     return settings.GROQ_API_KEY or get_credentials().groq_api_key
 
 
 def resolve_database_url() -> str | None:
     url = settings.DATABASE_URL or get_credentials().database_url
+=======
+    return get_credentials().groq_api_key or settings.GROQ_API_KEY
+
+
+def resolve_database_url() -> str | None:
+    url = get_credentials().database_url or settings.DATABASE_URL
+>>>>>>> 6139a41007e8ebd425a8fc868f356828dfc9dfcf
 
     return settings.normalize_database_url(url) if url else None
 

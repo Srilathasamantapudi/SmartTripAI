@@ -11,7 +11,11 @@ from pathlib import Path
 import certifi
 from dotenv import load_dotenv
 
+<<<<<<< HEAD
 load_dotenv(override=True)
+=======
+load_dotenv()
+>>>>>>> 6139a41007e8ebd425a8fc868f356828dfc9dfcf
 
 
 # Windows / corporate networks need an explicit CA bundle for outbound TLS.

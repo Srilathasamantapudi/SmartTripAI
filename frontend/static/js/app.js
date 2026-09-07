@@ -1,5 +1,9 @@
 /* ============================================================
+<<<<<<< HEAD
    SmartTrip AI — frontend
+=======
+   TravelBrain AI — frontend
+>>>>>>> 6139a41007e8ebd425a8fc868f356828dfc9dfcf
    Talks to:  POST   /api/travel  { message, thread_id }
               GET    /api/config          credential status
               POST   /api/config          set session keys
@@ -37,6 +41,7 @@
   var credList      = $("credList");
   var settingsSave  = $("settingsSave");
 
+<<<<<<< HEAD
   var savedGuidesTopbarBtn  = $("savedGuidesTopbarBtn");
   var savedGuidesModal      = $("savedGuidesModal");
   var savedGuidesScrim      = $("savedGuidesScrim");
@@ -47,6 +52,11 @@
 
   var THEME_KEY = "travelbrain.theme";
   var SAVED_GUIDES_KEY = "travelbrain.saved_guides";
+=======
+  /* ---------------- state ---------------- */
+
+  var THEME_KEY = "travelbrain.theme";
+>>>>>>> 6139a41007e8ebd425a8fc868f356828dfc9dfcf
 
   var threadId = null;   // LangGraph conversation thread for the current trip
   var busy = false;
@@ -265,10 +275,14 @@
     database_url: "DATABASE_URL"
   };
 
+<<<<<<< HEAD
   /* ---------------- settings modal ---------------- */
 
   function openSettings() {
     closeSavedGuidesModal();
+=======
+  function openSettings() {
+>>>>>>> 6139a41007e8ebd425a8fc868f356828dfc9dfcf
     settingsModal.hidden = false;
     settingsScrim.hidden = false;
     renderCreds(credList);
@@ -283,6 +297,7 @@
     settingsScrim.hidden = true;
   }
 
+<<<<<<< HEAD
   /* ---------------- saved guides modal & storage ---------------- */
 
   function openSavedGuidesModal() {
@@ -426,6 +441,8 @@
     toast("Guide opened");
   }
 
+=======
+>>>>>>> 6139a41007e8ebd425a8fc868f356828dfc9dfcf
   function setSavingConfig(state, button) {
     savingConfig = state;
     [settingsSave, gateSave].forEach(function (b) { b.disabled = state; });
@@ -516,6 +533,7 @@
   gateSave.addEventListener("click", function () { saveCredentials(gateCreds, gateSave); });
   $("settingsReset").addEventListener("click", resetSettings);
 
+<<<<<<< HEAD
   if (savedGuidesTopbarBtn) {
     savedGuidesTopbarBtn.addEventListener("click", openSavedGuidesModal);
   }
@@ -531,6 +549,10 @@
       if (!settingsModal.hidden) closeSettings();
       if (!savedGuidesModal.hidden) closeSavedGuidesModal();
     }
+=======
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && !settingsModal.hidden) closeSettings();
+>>>>>>> 6139a41007e8ebd425a8fc868f356828dfc9dfcf
   });
 
   /* ============================================================
@@ -539,6 +561,7 @@
 
   function renderUser(text) {
     var wrap = el("div", "msg msg-user");
+<<<<<<< HEAD
     var currentText = text;
 
     var bubble = el("div", "bubble-user", currentText);
@@ -606,6 +629,9 @@
       }
     });
 
+=======
+    wrap.appendChild(el("div", "bubble-user", text));
+>>>>>>> 6139a41007e8ebd425a8fc868f356828dfc9dfcf
     messages.appendChild(wrap);
     return wrap;
   }
@@ -678,7 +704,11 @@
     head.appendChild(avatar);
 
     var titleBox = el("div", "card-title");
+<<<<<<< HEAD
     titleBox.appendChild(el("strong", null, "SmartTrip AI"));
+=======
+    titleBox.appendChild(el("strong", null, "TravelBrain AI"));
+>>>>>>> 6139a41007e8ebd425a8fc868f356828dfc9dfcf
     titleBox.appendChild(el("small", null, "Plan ready"));
     head.appendChild(titleBox);
 
@@ -701,7 +731,11 @@
       var url = URL.createObjectURL(blob);
       var a = document.createElement("a");
       a.href = url;
+<<<<<<< HEAD
       a.download = "smarttrip-plan.md";
+=======
+      a.download = "travelbrain-plan.md";
+>>>>>>> 6139a41007e8ebd425a8fc868f356828dfc9dfcf
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -712,6 +746,7 @@
       window.print();
     }));
 
+<<<<<<< HEAD
     var saveGuideBtn = el("button", "btn btn-soft btn-sm btn-save-guide");
     saveGuideBtn.type = "button";
     saveGuideBtn.title = "Save Guide";
@@ -739,6 +774,8 @@
     });
     tools.appendChild(saveGuideBtn);
 
+=======
+>>>>>>> 6139a41007e8ebd425a8fc868f356828dfc9dfcf
     head.appendChild(tools);
     card.appendChild(head);
 
@@ -787,6 +824,7 @@
     if (kind === "setup") {
       var open = el("button", "btn btn-soft btn-sm", "Open settings");
       open.type = "button";
+<<<<<<< HEAD
       open.addEventListener("click", function () { openSettings("creds"); });
       textBox.appendChild(open);
     } else if (message && (message.indexOf("password authentication failed") !== -1 || message.indexOf("Network is unreachable") !== -1 || message.indexOf("connection failed") !== -1)) {
@@ -799,6 +837,10 @@
         toast("Session cleared. Using server .env credentials.");
       });
       textBox.appendChild(resetBtn);
+=======
+      open.addEventListener("click", openSettings);
+      textBox.appendChild(open);
+>>>>>>> 6139a41007e8ebd425a8fc868f356828dfc9dfcf
     }
 
     body.appendChild(textBox);
@@ -1063,7 +1105,10 @@
 
   initTheme();
   updateEmptyState();
+<<<<<<< HEAD
   updateSavedGuidesBadge();
+=======
+>>>>>>> 6139a41007e8ebd425a8fc868f356828dfc9dfcf
   refreshConfig().then(function () {
     if (isReady()) input.focus();
   });

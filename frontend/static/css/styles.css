@@ -1,5 +1,9 @@
 /* ============================================================
+<<<<<<< HEAD
    SmartTrip AI — design tokens
+=======
+   TravelBrain AI — design tokens
+>>>>>>> 6139a41007e8ebd425a8fc868f356828dfc9dfcf
    ============================================================ */
 
 :root {
@@ -978,6 +982,7 @@ svg { width: 1em; height: 1em; display: block; }
 
 /* the composer is inert until at least one live API is configured */
 .composer-wrap.is-locked { opacity: .5; pointer-events: none; }
+<<<<<<< HEAD
 
 /* ============================================================
    prompt editing
@@ -1205,3 +1210,5 @@ svg { width: 1em; height: 1em; display: block; }
   max-width: 32ch;
   line-height: 1.5;
 }
+=======
+>>>>>>> 6139a41007e8ebd425a8fc868f356828dfc9dfcf
