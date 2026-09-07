@@ -34,7 +34,7 @@
         </a>
 
         <div class="topbar-actions">
-          <button class="status" id="apiStatus" data-state="checking" type="button" title="Open settings">
+          <button class="status" id="apiStatus" data-state="checking" type="button" title="API Connected — Configure API Keys">
             <span class="status-dot"></span>
             <span class="status-text">Checking…</span>
           </button>
@@ -58,8 +58,13 @@
 
           <button class="icon-btn" id="themeToggle" type="button" aria-label="Toggle colour theme" title="Toggle theme">
             <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>
-            <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+            <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
           </button>
+
+          <a href="/login" class="btn btn-soft btn-sm topbar-auth-link" id="topbarAuthBtn" title="Sign in or register">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span class="btn-label" id="topbarAuthLabel">Sign in</span>
+          </a>
         </div>
       </header>
 
@@ -196,44 +201,299 @@
     </main>
   </div>
 
-  <!-- ============ SETTINGS ============ -->
-  <div class="modal-scrim" id="settingsScrim" hidden></div>
-  <div class="modal" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" hidden>
-    <div class="modal-head">
-      <div class="modal-heading">
-        <h2 id="settingsTitle">Settings</h2>
-        <p>Keys you enter here stay in server memory for this browser session only — they are never written to disk.</p>
+  <!-- ============ API CONNECTED (CREDENTIALS) FULL-PAGE VIEW ============ -->
+  <div class="fullpage-view" id="apiModal" role="region" aria-label="API Connected" hidden>
+    <header class="fullpage-header">
+      <div class="fullpage-header-inner">
+        <button class="btn btn-soft btn-sm btn-back" id="apiModalClose" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          <span>Back to Trip Planner</span>
+        </button>
+        <div class="fullpage-title">
+          <h2>API Connected</h2>
+          <span class="badge badge-session">Service Credentials</span>
+        </div>
+        <button class="icon-btn fullpage-close-btn" id="apiModalCloseX" type="button" aria-label="Close API credentials">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
       </div>
-      <button class="icon-btn" id="settingsClose" type="button" aria-label="Close settings">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
-      </button>
-    </div>
+    </header>
 
-    <div class="modal-body" id="credList"></div>
+    <div class="fullpage-body">
+      <div class="fullpage-content">
+        <div class="fullpage-intro">
+          <h2>API Configuration &amp; Credentials</h2>
+          <p>Keys configured here are securely held in server memory for this browser session only — they are never written to disk or echoed back.</p>
+        </div>
 
-    <div class="modal-foot">
-      <button class="btn btn-ghost btn-sm" id="settingsReset" type="button" title="Discard session keys and fall back to the server .env">Use server .env</button>
-      <button class="btn btn-primary btn-sm" id="settingsSave" type="button">
-        <span class="btn-label">Save for this session</span>
-        <span class="spinner" aria-hidden="true"></span>
-      </button>
+        <div class="fullpage-card" id="credList"></div>
+
+        <div class="fullpage-actions-row">
+          <button class="btn btn-ghost btn-sm" id="settingsReset" type="button" title="Discard session keys and fall back to the server .env">Use server .env</button>
+          <button class="btn btn-primary" id="settingsSave" type="button">
+            <span class="btn-label">Save for this session</span>
+            <span class="spinner" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- ============ SAVED GUIDES MODAL ============ -->
-  <div class="modal-scrim" id="savedGuidesScrim" hidden></div>
-  <div class="modal" id="savedGuidesModal" role="dialog" aria-modal="true" aria-labelledby="savedGuidesModalTitle" hidden>
-    <div class="modal-head">
-      <div class="modal-heading">
-        <h2 id="savedGuidesModalTitle">Saved Guides</h2>
-        <p>Access and reopen your saved travel itineraries.</p>
+  <!-- ============ SETTINGS FULL-PAGE VIEW ============ -->
+  <div class="fullpage-view" id="settingsModal" role="region" aria-label="Settings" hidden>
+    <header class="fullpage-header">
+      <div class="fullpage-header-inner">
+        <button class="btn btn-soft btn-sm btn-back" id="settingsClose" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          <span>Back to Trip Planner</span>
+        </button>
+        <div class="fullpage-title">
+          <h2>Settings</h2>
+        </div>
+        <button class="icon-btn fullpage-close-btn" id="settingsCloseX" type="button" aria-label="Close settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
       </div>
-      <button class="icon-btn" id="savedGuidesClose" type="button" aria-label="Close saved guides">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
-      </button>
-    </div>
+    </header>
 
-    <div class="modal-body saved-guides-body" id="savedGuidesModalList"></div>
+    <div class="fullpage-body">
+      <div class="fullpage-content settings-content">
+        <div class="fullpage-intro">
+          <h2>Preferences &amp; Account Settings</h2>
+          <p>Customize your traveler profile, journey preferences, preferred currency, and application behaviors.</p>
+        </div>
+
+        <!-- 1. Profile -->
+        <section class="settings-card" id="sectionProfile">
+          <div class="settings-card-header">
+            <div class="settings-card-title">
+              <span class="settings-card-icon">👤</span>
+              <div>
+                <h3>Profile</h3>
+                <p>Personalize your traveler details displayed across your itineraries.</p>
+              </div>
+            </div>
+          </div>
+          <div class="settings-card-body">
+            <div class="profile-layout">
+              <div class="profile-avatar-wrap">
+                <div class="profile-avatar" id="settingsAvatar">TM</div>
+              </div>
+              <div class="profile-inputs">
+                <div class="settings-field">
+                  <label for="profileName">Full Name</label>
+                  <input type="text" id="profileName" placeholder="Your Name" />
+                </div>
+                <div class="settings-field">
+                  <label for="profileEmail">Email Address</label>
+                  <input type="email" id="profileEmail" placeholder="your.email@example.com" />
+                </div>
+              </div>
+            </div>
+            <div class="settings-card-footer">
+              <button type="button" class="btn btn-soft btn-sm" id="saveProfileBtn">Save Profile</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. Travel Preferences -->
+        <section class="settings-card" id="sectionTravelPreferences">
+          <div class="settings-card-header">
+            <div class="settings-card-title">
+              <span class="settings-card-icon">✈️</span>
+              <div>
+                <h3>Travel Preferences</h3>
+                <p>Configure default trip styles, pace, and preferred activities for the AI.</p>
+              </div>
+            </div>
+          </div>
+          <div class="settings-card-body">
+            <div class="pref-grid">
+              <div class="settings-field">
+                <label for="prefTravelStyle">Travel Style</label>
+                <select id="prefTravelStyle" class="settings-select">
+                  <option value="solo">Solo Traveler</option>
+                  <option value="couple">Couple / Romantic</option>
+                  <option value="family">Family with Kids</option>
+                  <option value="friends">Friends / Group</option>
+                  <option value="business">Business / Bleisure</option>
+                </select>
+              </div>
+              <div class="settings-field">
+                <label for="prefPace">Travel Pace</label>
+                <select id="prefPace" class="settings-select">
+                  <option value="relaxed">Relaxed &amp; Leisurely</option>
+                  <option value="moderate" selected>Balanced &amp; Moderate</option>
+                  <option value="fast">Fast-Paced &amp; Packed</option>
+                </select>
+              </div>
+              <div class="settings-field">
+                <label for="prefCabin">Default Cabin Class</label>
+                <select id="prefCabin" class="settings-select">
+                  <option value="economy" selected>Economy</option>
+                  <option value="premium">Premium Economy</option>
+                  <option value="business">Business Class</option>
+                </select>
+              </div>
+              <div class="settings-field">
+                <label for="prefDietary">Dietary Preferences</label>
+                <select id="prefDietary" class="settings-select">
+                  <option value="none" selected>No Restrictions</option>
+                  <option value="vegetarian">Vegetarian</option>
+                  <option value="vegan">Vegan</option>
+                  <option value="halal">Halal</option>
+                  <option value="kosher">Kosher</option>
+                  <option value="gluten-free">Gluten-Free</option>
+                </select>
+              </div>
+            </div>
+            <div class="pref-interests-block">
+              <label class="settings-field-label">Preferred Interests</label>
+              <div class="pref-chips" id="settingsInterestChips">
+                <button type="button" class="chip pref-chip" data-value="food">🍜 Food</button>
+                <button type="button" class="chip pref-chip" data-value="history">🏛️ History</button>
+                <button type="button" class="chip pref-chip" data-value="nature">🌿 Nature</button>
+                <button type="button" class="chip pref-chip" data-value="nightlife">🌃 Nightlife</button>
+                <button type="button" class="chip pref-chip" data-value="shopping">🛍️ Shopping</button>
+                <button type="button" class="chip pref-chip" data-value="adventure">🧗 Adventure</button>
+                <button type="button" class="chip pref-chip" data-value="relaxation">🧘 Relaxation</button>
+              </div>
+            </div>
+            <div class="settings-card-footer">
+              <button type="button" class="btn btn-soft btn-sm" id="savePreferencesBtn">Save Preferences</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. Currency -->
+        <section class="settings-card" id="sectionCurrency">
+          <div class="settings-list-item">
+            <div class="settings-item-meta">
+              <div class="settings-item-icon">💱</div>
+              <div class="settings-item-text">
+                <h4>Currency</h4>
+                <p>Default currency for displaying estimated flight, hotel, and activity budgets.</p>
+              </div>
+            </div>
+            <div class="settings-item-ctrl">
+              <select id="settingsCurrency" class="settings-select settings-select-currency">
+                <option value="USD">USD ($) — US Dollar</option>
+                <option value="EUR">EUR (€) — Euro</option>
+                <option value="GBP">GBP (£) — British Pound</option>
+                <option value="JPY">JPY (¥) — Japanese Yen</option>
+                <option value="CAD">CAD ($) — Canadian Dollar</option>
+                <option value="AUD">AUD ($) — Australian Dollar</option>
+                <option value="INR">INR (₹) — Indian Rupee</option>
+                <option value="BDT">BDT (৳) — Bangladeshi Taka</option>
+                <option value="SGD">SGD ($) — Singapore Dollar</option>
+                <option value="AED">AED (د.إ) — UAE Dirham</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4 & 5. App Preferences (Notifications & Remember Trip Preferences) -->
+        <section class="settings-card settings-group-card">
+          <!-- 4. Notifications — On/Off -->
+          <div class="settings-list-item">
+            <div class="settings-item-meta">
+              <div class="settings-item-icon">🔔</div>
+              <div class="settings-item-text">
+                <h4>Notifications</h4>
+                <p>Receive itinerary updates, agent status alerts, and travel reminders.</p>
+              </div>
+            </div>
+            <div class="settings-item-ctrl">
+              <label class="switch" aria-label="Toggle notifications">
+                <input type="checkbox" id="toggleNotifications" checked />
+                <span class="switch-slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="settings-item-divider"></div>
+
+          <!-- 5. Remember Trip Preferences — On/Off -->
+          <div class="settings-list-item">
+            <div class="settings-item-meta">
+              <div class="settings-item-icon">💾</div>
+              <div class="settings-item-text">
+                <h4>Remember Trip Preferences</h4>
+                <p>Automatically pre-fill trip builder with your favorite travel style and interests.</p>
+              </div>
+            </div>
+            <div class="settings-item-ctrl">
+              <label class="switch" aria-label="Toggle remember trip preferences">
+                <input type="checkbox" id="toggleRememberPreferences" checked />
+                <span class="switch-slider"></span>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6 & 7. Data & Session (Clear Trip History & Logout) -->
+        <section class="settings-card settings-group-card">
+          <!-- 6. Clear Trip History -->
+          <div class="settings-list-item">
+            <div class="settings-item-meta">
+              <div class="settings-item-icon">🗑️</div>
+              <div class="settings-item-text">
+                <h4>Clear Trip History</h4>
+                <p>Remove current conversation messages and reset active trip planning sessions.</p>
+              </div>
+            </div>
+            <div class="settings-item-ctrl">
+              <button type="button" class="btn btn-danger-soft btn-sm" id="clearTripHistoryBtn">Clear Trip History</button>
+            </div>
+          </div>
+
+          <div class="settings-item-divider"></div>
+
+          <!-- 7. Logout -->
+          <div class="settings-list-item">
+            <div class="settings-item-meta">
+              <div class="settings-item-icon">🚪</div>
+              <div class="settings-item-text">
+                <h4>Logout</h4>
+                <p>Sign out of your account and return to the login screen.</p>
+              </div>
+            </div>
+            <div class="settings-item-ctrl">
+              <button type="button" class="btn btn-outline-danger btn-sm" id="logoutBtn">Logout</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SAVED GUIDES FULL-PAGE VIEW ============ -->
+  <div class="fullpage-view" id="savedGuidesModal" role="region" aria-label="Saved Guides" hidden>
+    <header class="fullpage-header">
+      <div class="fullpage-header-inner">
+        <button class="btn btn-soft btn-sm btn-back" id="savedGuidesClose" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          <span>Back to Trip Planner</span>
+        </button>
+        <div class="fullpage-title">
+          <h2>Saved Guides</h2>
+        </div>
+        <button class="icon-btn fullpage-close-btn" id="savedGuidesCloseX" type="button" aria-label="Close saved guides">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="fullpage-body">
+      <div class="fullpage-content">
+        <div class="fullpage-intro">
+          <h2>Your Saved Travel Guides</h2>
+          <p>Access, review and reopen your custom multi-agent itineraries and travel research.</p>
+        </div>
+
+        <div class="saved-guides-fullpage-list" id="savedGuidesModalList"></div>
+      </div>
+    </div>
   </div>
 
   <!-- toast -->

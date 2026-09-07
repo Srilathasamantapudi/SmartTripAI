@@ -32,10 +32,20 @@
   var gateSub      = $("gateSub");
   var gateSave     = $("gateSave");
 
-  var settingsModal = $("settingsModal");
-  var settingsScrim = $("settingsScrim");
+  var apiModal      = $("apiModal");
+  var apiModalScrim = $("apiModalScrim");
+  var apiModalClose = $("apiModalClose");
   var credList      = $("credList");
   var settingsSave  = $("settingsSave");
+  var settingsReset = $("settingsReset");
+
+  var settingsBtn   = $("settingsBtn");
+  var settingsModal = $("settingsModal");
+  var settingsScrim = $("settingsScrim");
+  var settingsClose = $("settingsClose");
+
+  var topbarAuthBtn   = $("topbarAuthBtn");
+  var topbarAuthLabel = $("topbarAuthLabel");
 
   var savedGuidesTopbarBtn  = $("savedGuidesTopbarBtn");
   var savedGuidesModal      = $("savedGuidesModal");
@@ -47,6 +57,8 @@
 
   var THEME_KEY = "smarttrip.theme";
   var SAVED_GUIDES_KEY = "smarttrip.saved_guides";
+  var USER_KEY = "smarttrip.user";
+  var SETTINGS_KEY = "smarttrip.settings";
 
   var threadId = null;   // LangGraph conversation thread for the current trip
   var busy = false;
@@ -153,11 +165,11 @@
     if (data && data.ready) {
       statusBtn.setAttribute("data-state", "ok");
       statusText.textContent = "API connected";
-      statusBtn.title = "All keys configured — open settings";
+      statusBtn.title = "All keys configured — click to view API credentials";
     } else {
       statusBtn.setAttribute("data-state", "setup");
       statusText.textContent = "No Live API";
-      statusBtn.title = "No API keys configured — open settings";
+      statusBtn.title = "Configure API keys (Groq & PostgreSQL)";
 
       var labels = missing.map(function (name) {
         return (data.credentials[name] && data.credentials[name].label) || name;
@@ -171,7 +183,7 @@
       renderCreds(gateCreds);
     }
 
-    if (!settingsModal.hidden) renderCreds(credList);
+    if (apiModal && !apiModal.hidden) renderCreds(credList);
 
     updateEmptyState();
   }
@@ -265,12 +277,15 @@
     database_url: "DATABASE_URL"
   };
 
-  /* ---------------- settings modal ---------------- */
+  /* ---------------- API connected (credentials) fullpage view ---------------- */
 
-  function openSettings() {
+  function openApiModal() {
+    closeSettings();
     closeSavedGuidesModal();
-    settingsModal.hidden = false;
-    settingsScrim.hidden = false;
+    if (apiModal) {
+      apiModal.hidden = false;
+    }
+    document.body.style.overflow = "hidden";
     renderCreds(credList);
     refreshConfig();
 
@@ -278,23 +293,150 @@
     if (first) first.focus();
   }
 
-  function closeSettings() {
-    settingsModal.hidden = true;
-    settingsScrim.hidden = true;
+  function closeApiModal() {
+    if (apiModal) {
+      apiModal.hidden = true;
+    }
+    document.body.style.overflow = "";
   }
 
-  /* ---------------- saved guides modal & storage ---------------- */
+  /* ---------------- settings modal (Profile, Preferences, Currency, Toggles, Clear, Logout) ---------------- */
+
+  function getStoredUser() {
+    try {
+      var raw = localStorage.getItem(USER_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function getStoredSettings() {
+    try {
+      var raw = localStorage.getItem(SETTINGS_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveStoredSettings(st) {
+    try {
+      localStorage.setItem(SETTINGS_KEY, JSON.stringify(st));
+    } catch (e) {}
+  }
+
+  function updateAuthTopbar() {
+    var user = getStoredUser();
+    if (topbarAuthLabel) {
+      if (user && user.name) {
+        topbarAuthLabel.textContent = user.name.split(" ")[0];
+        if (topbarAuthBtn) {
+          topbarAuthBtn.title = "Signed in as " + user.name + " (" + (user.email || "") + ")";
+          topbarAuthBtn.onclick = function (e) {
+            e.preventDefault();
+            openSettings();
+          };
+        }
+      } else {
+        topbarAuthLabel.textContent = "Sign in";
+        if (topbarAuthBtn) {
+          topbarAuthBtn.title = "Sign in or register";
+          topbarAuthBtn.onclick = null;
+          topbarAuthBtn.href = "/login";
+        }
+      }
+    }
+  }
+
+  function loadSettings() {
+    // 1. Profile
+    var user = getStoredUser() || { name: "Alex Morgan", email: "alex.morgan@example.com" };
+    var nameInput = $("profileName");
+    var emailInput = $("profileEmail");
+    var avatar = $("settingsAvatar");
+    if (nameInput) nameInput.value = user.name || "";
+    if (emailInput) emailInput.value = user.email || "";
+    if (avatar) {
+      var initials = (user.name || "AM").split(" ").map(function (w) { return w[0]; }).join("").toUpperCase().slice(0, 2);
+      avatar.textContent = initials || "AM";
+    }
+
+    var st = getStoredSettings();
+
+    // 2. Travel Preferences
+    var tp = st.travelPreferences || {};
+    var styleSelect = $("prefTravelStyle");
+    var paceSelect = $("prefPace");
+    var cabinSelect = $("prefCabin");
+    var dietarySelect = $("prefDietary");
+    if (styleSelect && tp.style) styleSelect.value = tp.style;
+    if (paceSelect && tp.pace) paceSelect.value = tp.pace;
+    if (cabinSelect && tp.cabin) cabinSelect.value = tp.cabin;
+    if (dietarySelect && tp.dietary) dietarySelect.value = tp.dietary;
+
+    var selectedInterests = tp.interests || ["food", "history"];
+    var chipContainer = $("settingsInterestChips");
+    if (chipContainer) {
+      chipContainer.querySelectorAll(".pref-chip").forEach(function (chip) {
+        var val = chip.getAttribute("data-value");
+        chip.classList.toggle("is-active", selectedInterests.indexOf(val) !== -1);
+      });
+    }
+
+    // 3. Currency
+    var currencySelect = $("settingsCurrency");
+    if (currencySelect) {
+      currencySelect.value = st.currency || "USD";
+    }
+
+    // 4. Notifications — On/Off
+    var notifToggle = $("toggleNotifications");
+    if (notifToggle) {
+      notifToggle.checked = st.notifications !== false;
+    }
+
+    // 5. Remember Trip Preferences — On/Off
+    var rememberToggle = $("toggleRememberPreferences");
+    if (rememberToggle) {
+      rememberToggle.checked = st.rememberPreferences !== false;
+    }
+  }
+
+  function openSettings() {
+    closeApiModal();
+    closeSavedGuidesModal();
+    if (settingsModal) {
+      settingsModal.hidden = false;
+    }
+    document.body.style.overflow = "hidden";
+    loadSettings();
+  }
+
+  function closeSettings() {
+    if (settingsModal) {
+      settingsModal.hidden = true;
+    }
+    document.body.style.overflow = "";
+  }
+
+  /* ---------------- saved guides fullpage view & storage ---------------- */
 
   function openSavedGuidesModal() {
     closeSettings();
-    savedGuidesModal.hidden = false;
-    savedGuidesScrim.hidden = false;
+    closeApiModal();
+    if (savedGuidesModal) {
+      savedGuidesModal.hidden = false;
+    }
+    document.body.style.overflow = "hidden";
     renderSavedGuides();
   }
 
   function closeSavedGuidesModal() {
-    savedGuidesModal.hidden = true;
-    savedGuidesScrim.hidden = true;
+    if (savedGuidesModal) {
+      savedGuidesModal.hidden = true;
+    }
+    document.body.style.overflow = "";
   }
 
   function getSavedGuides() {
@@ -509,28 +651,145 @@
       .then(function () { setSavingConfig(false, settingsSave); });
   }
 
-  $("settingsBtn").addEventListener("click", openSettings);
-  statusBtn.addEventListener("click", openSettings);
-  $("settingsClose").addEventListener("click", closeSettings);
-  settingsScrim.addEventListener("click", closeSettings);
+  // API fullpage view triggers
+  statusBtn.addEventListener("click", openApiModal);
+  if ($("apiModalClose")) $("apiModalClose").addEventListener("click", closeApiModal);
+  if ($("apiModalCloseX")) $("apiModalCloseX").addEventListener("click", closeApiModal);
   settingsSave.addEventListener("click", function () { saveCredentials(credList, settingsSave); });
   gateSave.addEventListener("click", function () { saveCredentials(gateCreds, gateSave); });
   $("settingsReset").addEventListener("click", resetSettings);
 
+  // Settings fullpage view triggers
+  settingsBtn.addEventListener("click", openSettings);
+  if ($("settingsClose")) $("settingsClose").addEventListener("click", closeSettings);
+  if ($("settingsCloseX")) $("settingsCloseX").addEventListener("click", closeSettings);
+
+  // 1. Settings: Profile save
+  var saveProfileBtn = $("saveProfileBtn");
+  if (saveProfileBtn) {
+    saveProfileBtn.addEventListener("click", function () {
+      var name = ($("profileName") ? $("profileName").value.trim() : "") || "Traveler";
+      var email = ($("profileEmail") ? $("profileEmail").value.trim() : "");
+      var user = getStoredUser() || {};
+      user.name = name;
+      user.email = email;
+      try { localStorage.setItem(USER_KEY, JSON.stringify(user)); } catch (e) {}
+      var avatar = $("settingsAvatar");
+      if (avatar) {
+        var initials = name.split(" ").map(function (w) { return w[0]; }).join("").toUpperCase().slice(0, 2);
+        avatar.textContent = initials || "TR";
+      }
+      updateAuthTopbar();
+      toast("Profile saved.");
+    });
+  }
+
+  // 2. Settings: Travel Preferences chips & save
+  var settingsInterestChips = $("settingsInterestChips");
+  if (settingsInterestChips) {
+    settingsInterestChips.querySelectorAll(".pref-chip").forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        chip.classList.toggle("is-active");
+      });
+    });
+  }
+
+  var savePreferencesBtn = $("savePreferencesBtn");
+  if (savePreferencesBtn) {
+    savePreferencesBtn.addEventListener("click", function () {
+      var st = getStoredSettings();
+      var interests = [];
+      if (settingsInterestChips) {
+        settingsInterestChips.querySelectorAll(".pref-chip.is-active").forEach(function (chip) {
+          interests.push(chip.getAttribute("data-value"));
+        });
+      }
+      st.travelPreferences = {
+        style: $("prefTravelStyle") ? $("prefTravelStyle").value : "solo",
+        pace: $("prefPace") ? $("prefPace").value : "moderate",
+        cabin: $("prefCabin") ? $("prefCabin").value : "economy",
+        dietary: $("prefDietary") ? $("prefDietary").value : "none",
+        interests: interests
+      };
+      saveStoredSettings(st);
+      toast("Travel preferences saved.");
+    });
+  }
+
+  // 3. Settings: Currency
+  var settingsCurrency = $("settingsCurrency");
+  if (settingsCurrency) {
+    settingsCurrency.addEventListener("change", function () {
+      var st = getStoredSettings();
+      st.currency = settingsCurrency.value;
+      saveStoredSettings(st);
+      toast("Currency updated to " + settingsCurrency.value + ".");
+    });
+  }
+
+  // 4. Settings: Notifications
+  var toggleNotifications = $("toggleNotifications");
+  if (toggleNotifications) {
+    toggleNotifications.addEventListener("change", function () {
+      var st = getStoredSettings();
+      st.notifications = toggleNotifications.checked;
+      saveStoredSettings(st);
+      toast("Notifications " + (toggleNotifications.checked ? "enabled" : "disabled") + ".");
+    });
+  }
+
+  // 5. Settings: Remember Trip Preferences
+  var toggleRememberPreferences = $("toggleRememberPreferences");
+  if (toggleRememberPreferences) {
+    toggleRememberPreferences.addEventListener("change", function () {
+      var st = getStoredSettings();
+      st.rememberPreferences = toggleRememberPreferences.checked;
+      saveStoredSettings(st);
+      toast("Preference memory " + (toggleRememberPreferences.checked ? "enabled" : "disabled") + ".");
+    });
+  }
+
+  // 6. Settings: Clear Trip History
+  var clearTripHistoryBtn = $("clearTripHistoryBtn");
+  if (clearTripHistoryBtn) {
+    clearTripHistoryBtn.addEventListener("click", function () {
+      messages.innerHTML = "";
+      threadId = null;
+      updateEmptyState();
+      closeSettings();
+      toast("Trip history cleared.");
+    });
+  }
+
+  // 7. Settings: Logout
+  var logoutBtn = $("logoutBtn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", function () {
+      try { localStorage.removeItem(USER_KEY); } catch (e) {}
+      updateAuthTopbar();
+      closeSettings();
+      toast("Logged out. Redirecting to login…");
+      setTimeout(function () {
+        window.location.href = "/login";
+      }, 400);
+    });
+  }
+
   if (savedGuidesTopbarBtn) {
     savedGuidesTopbarBtn.addEventListener("click", openSavedGuidesModal);
   }
-  if (savedGuidesClose) {
-    savedGuidesClose.addEventListener("click", closeSavedGuidesModal);
+  if ($("savedGuidesClose")) {
+    $("savedGuidesClose").addEventListener("click", closeSavedGuidesModal);
   }
-  if (savedGuidesScrim) {
-    savedGuidesScrim.addEventListener("click", closeSavedGuidesModal);
+  if ($("savedGuidesCloseX")) {
+    $("savedGuidesCloseX").addEventListener("click", closeSavedGuidesModal);
   }
 
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") {
-      if (!settingsModal.hidden) closeSettings();
-      if (!savedGuidesModal.hidden) closeSavedGuidesModal();
+      if (apiModal && !apiModal.hidden) closeApiModal();
+      if (settingsModal && !settingsModal.hidden) closeSettings();
+      if (savedGuidesModal && !savedGuidesModal.hidden) closeSavedGuidesModal();
     }
   });
 
@@ -774,7 +1033,7 @@
       },
       setup: {
         title: "Missing credentials",
-        detail: "Add the required keys in Settings, or set them in the server's .env file."
+        detail: "Add the required keys in API Connected, or set them in the server's .env file."
       }
     }[kind || "server"];
 
@@ -784,9 +1043,9 @@
     textBox.appendChild(el("code", null, message));
 
     if (kind === "setup") {
-      var open = el("button", "btn btn-soft btn-sm", "Open settings");
+      var open = el("button", "btn btn-soft btn-sm", "Configure API keys");
       open.type = "button";
-      open.addEventListener("click", function () { openSettings("creds"); });
+      open.addEventListener("click", function () { openApiModal(); });
       textBox.appendChild(open);
     } else if (message && (message.indexOf("password authentication failed") !== -1 || message.indexOf("Network is unreachable") !== -1 || message.indexOf("connection failed") !== -1)) {
       var resetBtn = el("button", "btn btn-soft btn-sm", "Use server .env");
@@ -1002,7 +1261,20 @@
     var show = builder.hidden;
     builder.hidden = !show;
     builderToggle.classList.toggle("is-on", show);
-    if (show) $("fFrom").focus();
+    if (show) {
+      $("fFrom").focus();
+      var st = getStoredSettings();
+      if (st.rememberPreferences !== false && st.travelPreferences) {
+        var tp = st.travelPreferences;
+        if (tp.interests && tp.interests.length) {
+          document.querySelectorAll("#interestChips .chip").forEach(function (chip) {
+            if (tp.interests.indexOf(chip.getAttribute("data-value")) !== -1) {
+              chip.classList.add("on");
+            }
+          });
+        }
+      }
+    }
   });
 
   document.querySelectorAll("#interestChips .chip").forEach(function (chip) {
@@ -1015,20 +1287,20 @@
   });
 
   $("builderApply").addEventListener("click", function () {
-    var from    = $("fFrom").value.trim();
-    var to      = $("fTo").value.trim();
-    var date    = $("fDate").value;
-    var days    = $("fDays").value.trim();
-    var people  = $("fPeople").value.trim();
-    var budget  = $("fBudget").value.trim();
+    var from     = $("fFrom").value.trim();
+    var to       = $("fTo").value.trim();
+    var date     = $("fDate").value;
+    var days     = $("fDays").value.trim();
+    var people   = $("fPeople").value.trim();
+    var budget   = $("fBudget").value.trim();
 
     var interests = [];
     document.querySelectorAll("#interestChips .chip.on").forEach(function (c) {
-      interests.push(c.getAttribute("data-value"));
+      interests.push(c.textContent.replace(/^[^\w]+/, "").trim());
     });
 
     if (!to) {
-      toast("Add a destination first.");
+      toast("Fill in at least a destination.");
       $("fTo").focus();
       return;
     }
@@ -1061,6 +1333,7 @@
   /* ---------------- boot ---------------- */
 
   initTheme();
+  updateAuthTopbar();
   updateEmptyState();
   updateSavedGuidesBadge();
   refreshConfig().then(function () {

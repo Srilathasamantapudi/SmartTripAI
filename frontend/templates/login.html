@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign in — SmartTrip AI</title>
+  <meta name="description" content="Sign in or create an account for SmartTrip AI - Multi-Agent Travel Planner." />
+  <link rel="stylesheet" href="/static/css/styles.css" />
+</head>
+<body class="auth-body">
+
+  <!-- ambient background -->
+  <div class="aurora" aria-hidden="true">
+    <span class="blob blob-1"></span>
+    <span class="blob blob-2"></span>
+    <span class="blob blob-3"></span>
+    <span class="grid"></span>
+  </div>
+
+  <div class="auth-container">
+    <header class="auth-header">
+      <a class="brand" href="/">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17.8 19.2 16 11l3.5-3.5a2.1 2.1 0 0 0-3-3L13 8 4.8 6.2a.8.8 0 0 0-.8 1.3L8 11l-2 2-2.2-.5a.6.6 0 0 0-.6 1L5 16l2.5 1.8a.6.6 0 0 0 1-.6L8 15l2-2 3.5 4a.8.8 0 0 0 1.3-.8Z"/>
+          </svg>
+        </span>
+        <span class="brand-text">
+          <strong>SmartTrip</strong>
+          <em>AI</em>
+        </span>
+      </a>
+
+      <button class="icon-btn theme-toggle-btn" id="themeToggle" type="button" aria-label="Toggle colour theme" title="Toggle theme">
+        <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>
+        <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </button>
+    </header>
+
+    <main class="auth-card" id="authCard" data-mode="{{ mode|default('login') }}">
+      
+      <!-- Tab switcher -->
+      <div class="auth-tabs" role="tablist">
+        <button class="auth-tab {% if mode != 'signup' %}active{% endif %}" id="tabLogin" type="button" role="tab" aria-selected="{% if mode != 'signup' %}true{% else %}false{% endif %}">Log in</button>
+        <button class="auth-tab {% if mode == 'signup' %}active{% endif %}" id="tabSignup" type="button" role="tab" aria-selected="{% if mode == 'signup' %}true{% else %}false{% endif %}">Sign up</button>
+      </div>
+
+      <!-- ================= LOGIN FORM ================= -->
+      <div class="auth-pane {% if mode != 'signup' %}is-active{% endif %}" id="loginPane" role="tabpanel">
+        <div class="auth-pane-head">
+          <h2>Welcome back</h2>
+          <p>Sign in to access your planned trips and personalized travel preferences.</p>
+        </div>
+
+        <form class="auth-form" id="loginForm" novalidate>
+          <div class="auth-field">
+            <label for="loginEmail">Email</label>
+            <div class="auth-input-wrap">
+              <span class="auth-input-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </span>
+              <input type="email" id="loginEmail" placeholder="you@example.com" required autocomplete="email" />
+            </div>
+            <p class="field-error" id="loginEmailError" hidden></p>
+          </div>
+
+          <div class="auth-field">
+            <div class="auth-field-label-row">
+              <label for="loginPassword">Password</label>
+              <button type="button" class="link-btn" id="forgotPasswordBtn">Forgot Password?</button>
+            </div>
+            <div class="auth-input-wrap">
+              <span class="auth-input-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </span>
+              <input type="password" id="loginPassword" placeholder="••••••••" required autocomplete="current-password" />
+              <button type="button" class="icon-btn pass-toggle" data-target="loginPassword" aria-label="Toggle password visibility">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+            <p class="field-error" id="loginPasswordError" hidden></p>
+          </div>
+
+          <button type="submit" class="btn btn-primary auth-submit-btn" id="loginSubmitBtn">
+            <span class="btn-label">Login</span>
+            <span class="spinner" aria-hidden="true"></span>
+          </button>
+        </form>
+
+        <p class="auth-foot-text">
+          Don&rsquo;t have an account? <a href="/signup" id="toSignupLink">Sign up</a>
+        </p>
+      </div>
+
+      <!-- ================= SIGNUP FORM ================= -->
+      <div class="auth-pane {% if mode == 'signup' %}is-active{% endif %}" id="signupPane" role="tabpanel">
+        <div class="auth-pane-head">
+          <h2>Create an account</h2>
+          <p>Join SmartTrip AI to plan journeys, save guides, and customize travel tastes.</p>
+        </div>
+
+        <form class="auth-form" id="signupForm" novalidate>
+          <div class="auth-field">
+            <label for="signupName">Name</label>
+            <div class="auth-input-wrap">
+              <span class="auth-input-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </span>
+              <input type="text" id="signupName" placeholder="Alex Morgan" required autocomplete="name" />
+            </div>
+            <p class="field-error" id="signupNameError" hidden></p>
+          </div>
+
+          <div class="auth-field">
+            <label for="signupEmail">Email</label>
+            <div class="auth-input-wrap">
+              <span class="auth-input-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </span>
+              <input type="email" id="signupEmail" placeholder="you@example.com" required autocomplete="email" />
+            </div>
+            <p class="field-error" id="signupEmailError" hidden></p>
+          </div>
+
+          <div class="auth-field">
+            <label for="signupPassword">Password</label>
+            <div class="auth-input-wrap">
+              <span class="auth-input-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </span>
+              <input type="password" id="signupPassword" placeholder="Minimum 6 characters" required autocomplete="new-password" />
+              <button type="button" class="icon-btn pass-toggle" data-target="signupPassword" aria-label="Toggle password visibility">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+            <p class="field-error" id="signupPasswordError" hidden></p>
+          </div>
+
+          <div class="auth-field">
+            <label for="signupConfirmPassword">Confirm Password</label>
+            <div class="auth-input-wrap">
+              <span class="auth-input-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </span>
+              <input type="password" id="signupConfirmPassword" placeholder="Re-enter password" required autocomplete="new-password" />
+              <button type="button" class="icon-btn pass-toggle" data-target="signupConfirmPassword" aria-label="Toggle password visibility">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+            <p class="field-error" id="signupConfirmPasswordError" hidden></p>
+          </div>
+
+          <button type="submit" class="btn btn-primary auth-submit-btn" id="signupSubmitBtn">
+            <span class="btn-label">Signup</span>
+            <span class="spinner" aria-hidden="true"></span>
+          </button>
+        </form>
+
+        <p class="auth-foot-text">
+          Already have an account? <a href="/login" id="toLoginLink">Log in</a>
+        </p>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Forgot Password Modal -->
+  <div class="modal-scrim" id="forgotModalScrim" hidden></div>
+  <div class="modal" id="forgotModal" role="dialog" aria-modal="true" aria-labelledby="forgotTitle" hidden>
+    <div class="modal-head">
+      <div class="modal-heading">
+        <h2 id="forgotTitle">Reset Password</h2>
+        <p>Enter the email associated with your account and we&rsquo;ll send instructions.</p>
+      </div>
+      <button class="icon-btn" id="forgotCloseBtn" type="button" aria-label="Close dialog">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <form class="modal-body" id="forgotForm">
+      <div class="auth-field">
+        <label for="forgotEmail">Email address</label>
+        <div class="auth-input-wrap">
+          <input type="email" id="forgotEmail" placeholder="you@example.com" required />
+        </div>
+      </div>
+      <div class="forgot-feedback" id="forgotFeedback" hidden></div>
+    </form>
+    <div class="modal-foot">
+      <button class="btn btn-ghost btn-sm" id="forgotCancelBtn" type="button">Cancel</button>
+      <button class="btn btn-primary btn-sm" id="forgotSubmitBtn" type="button">Send reset link</button>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+
+  <script>
+    (function () {
+      "use strict";
+
+      var THEME_KEY = "smarttrip.theme";
+      var USER_KEY = "smarttrip.user";
+
+      // Theme
+      var storedTheme = null;
+      try { storedTheme = localStorage.getItem(THEME_KEY); } catch (e) {}
+      var prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
+      document.documentElement.setAttribute("data-theme", storedTheme || (prefersLight ? "light" : "dark"));
+
+      var themeToggle = document.getElementById("themeToggle");
+      if (themeToggle) {
+        themeToggle.addEventListener("click", function () {
+          var next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+          document.documentElement.setAttribute("data-theme", next);
+          try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+        });
+      }
+
+      // Toast helper
+      var toastEl = document.getElementById("toast");
+      var toastTimer;
+      function showToast(msg) {
+        if (!toastEl) return;
+        toastEl.textContent = msg;
+        toastEl.hidden = false;
+        requestAnimationFrame(function () { toastEl.classList.add("show"); });
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () {
+          toastEl.classList.remove("show");
+          setTimeout(function () { toastEl.hidden = true; }, 250);
+        }, 2800);
+      }
+
+      // Tab switcher
+      var tabLogin = document.getElementById("tabLogin");
+      var tabSignup = document.getElementById("tabSignup");
+      var loginPane = document.getElementById("loginPane");
+      var signupPane = document.getElementById("signupPane");
+      var toSignupLink = document.getElementById("toSignupLink");
+      var toLoginLink = document.getElementById("toLoginLink");
+
+      function setMode(mode) {
+        var isLogin = (mode === "login");
+        if (tabLogin) {
+          tabLogin.classList.toggle("active", isLogin);
+          tabLogin.setAttribute("aria-selected", isLogin ? "true" : "false");
+        }
+        if (tabSignup) {
+          tabSignup.classList.toggle("active", !isLogin);
+          tabSignup.setAttribute("aria-selected", !isLogin ? "true" : "false");
+        }
+        if (loginPane) loginPane.classList.toggle("is-active", isLogin);
+        if (signupPane) signupPane.classList.toggle("is-active", !isLogin);
+        window.history.replaceState({}, "", isLogin ? "/login" : "/signup");
+        document.title = (isLogin ? "Log in" : "Sign up") + " — SmartTrip AI";
+      }
+
+      if (tabLogin) tabLogin.addEventListener("click", function () { setMode("login"); });
+      if (tabSignup) tabSignup.addEventListener("click", function () { setMode("signup"); });
+      if (toSignupLink) {
+        toSignupLink.addEventListener("click", function (e) {
+          e.preventDefault();
+          setMode("signup");
+        });
+      }
+      if (toLoginLink) {
+        toLoginLink.addEventListener("click", function (e) {
+          e.preventDefault();
+          setMode("login");
+        });
+      }
+
+      // Password visibility toggle
+      document.querySelectorAll(".pass-toggle").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var targetId = btn.getAttribute("data-target");
+          var input = document.getElementById(targetId);
+          if (input) {
+            input.type = input.type === "password" ? "text" : "password";
+          }
+        });
+      });
+
+      // Login form submission
+      var loginForm = document.getElementById("loginForm");
+      if (loginForm) {
+        loginForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var email = document.getElementById("loginEmail").value.trim();
+          var password = document.getElementById("loginPassword").value;
+
+          var emailErr = document.getElementById("loginEmailError");
+          var passErr = document.getElementById("loginPasswordError");
+          emailErr.hidden = true;
+          passErr.hidden = true;
+
+          var valid = true;
+          if (!email || !/\S+@\S+\.\S+/.test(email)) {
+            emailErr.textContent = "Please enter a valid email address.";
+            emailErr.hidden = false;
+            valid = false;
+          }
+          if (!password) {
+            passErr.textContent = "Please enter your password.";
+            passErr.hidden = false;
+            valid = false;
+          }
+          if (!valid) return;
+
+          var btn = document.getElementById("loginSubmitBtn");
+          btn.classList.add("is-busy");
+
+          setTimeout(function () {
+            btn.classList.remove("is-busy");
+            var user = {
+              name: email.split("@")[0].replace(/[._-]/g, " ").replace(/\b\w/g, function (l) { return l.toUpperCase(); }) || "Traveler",
+              email: email,
+              loggedIn: true,
+              loginAt: new Date().toISOString()
+            };
+            try { localStorage.setItem(USER_KEY, JSON.stringify(user)); } catch (err) {}
+            showToast("Logged in successfully! Redirecting…");
+            setTimeout(function () { window.location.href = "/"; }, 500);
+          }, 600);
+        });
+      }
+
+      // Signup form submission
+      var signupForm = document.getElementById("signupForm");
+      if (signupForm) {
+        signupForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var name = document.getElementById("signupName").value.trim();
+          var email = document.getElementById("signupEmail").value.trim();
+          var password = document.getElementById("signupPassword").value;
+          var confirmPass = document.getElementById("signupConfirmPassword").value;
+
+          var nameErr = document.getElementById("signupNameError");
+          var emailErr = document.getElementById("signupEmailError");
+          var passErr = document.getElementById("signupPasswordError");
+          var confirmErr = document.getElementById("signupConfirmPasswordError");
+          nameErr.hidden = true;
+          emailErr.hidden = true;
+          passErr.hidden = true;
+          confirmErr.hidden = true;
+
+          var valid = true;
+          if (!name) {
+            nameErr.textContent = "Please enter your name.";
+            nameErr.hidden = false;
+            valid = false;
+          }
+          if (!email || !/\S+@\S+\.\S+/.test(email)) {
+            emailErr.textContent = "Please enter a valid email address.";
+            emailErr.hidden = false;
+            valid = false;
+          }
+          if (!password || password.length < 6) {
+            passErr.textContent = "Password must be at least 6 characters.";
+            passErr.hidden = false;
+            valid = false;
+          }
+          if (password !== confirmPass) {
+            confirmErr.textContent = "Passwords do not match.";
+            confirmErr.hidden = false;
+            valid = false;
+          }
+          if (!valid) return;
+
+          var btn = document.getElementById("signupSubmitBtn");
+          btn.classList.add("is-busy");
+
+          setTimeout(function () {
+            btn.classList.remove("is-busy");
+            var user = {
+              name: name,
+              email: email,
+              loggedIn: true,
+              signupAt: new Date().toISOString()
+            };
+            try { localStorage.setItem(USER_KEY, JSON.stringify(user)); } catch (err) {}
+            showToast("Account created successfully! Redirecting…");
+            setTimeout(function () { window.location.href = "/"; }, 500);
+          }, 600);
+        });
+      }
+
+      // Forgot Password Modal
+      var forgotModal = document.getElementById("forgotModal");
+      var forgotScrim = document.getElementById("forgotModalScrim");
+      var forgotBtn = document.getElementById("forgotPasswordBtn");
+      var forgotClose = document.getElementById("forgotCloseBtn");
+      var forgotCancel = document.getElementById("forgotCancelBtn");
+      var forgotSubmit = document.getElementById("forgotSubmitBtn");
+      var forgotFeedback = document.getElementById("forgotFeedback");
+
+      function openForgot() {
+        if (forgotModal && forgotScrim) {
+          forgotModal.hidden = false;
+          forgotScrim.hidden = false;
+          var curEmail = document.getElementById("loginEmail").value.trim();
+          var input = document.getElementById("forgotEmail");
+          if (input && curEmail) input.value = curEmail;
+          if (forgotFeedback) forgotFeedback.hidden = true;
+        }
+      }
+
+      function closeForgot() {
+        if (forgotModal && forgotScrim) {
+          forgotModal.hidden = true;
+          forgotScrim.hidden = true;
+        }
+      }
+
+      if (forgotBtn) forgotBtn.addEventListener("click", openForgot);
+      if (forgotClose) forgotClose.addEventListener("click", closeForgot);
+      if (forgotCancel) forgotCancel.addEventListener("click", closeForgot);
+      if (forgotScrim) forgotScrim.addEventListener("click", closeForgot);
+
+      if (forgotSubmit) {
+        forgotSubmit.addEventListener("click", function () {
+          var input = document.getElementById("forgotEmail");
+          var email = input ? input.value.trim() : "";
+          if (!email || !/\S+@\S+\.\S+/.test(email)) {
+            if (forgotFeedback) {
+              forgotFeedback.textContent = "Please enter a valid email address.";
+              forgotFeedback.className = "forgot-feedback error";
+              forgotFeedback.hidden = false;
+            }
+            return;
+          }
+          if (forgotFeedback) {
+            forgotFeedback.textContent = "If an account exists for " + email + ", a reset link has been sent.";
+            forgotFeedback.className = "forgot-feedback success";
+            forgotFeedback.hidden = false;
+          }
+          setTimeout(closeForgot, 2000);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

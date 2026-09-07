@@ -21,10 +21,25 @@ def run_travel_agent(user_input: str, thread_id: str | None = None) -> dict:
         }
     }
 
-    result = get_travel_graph().invoke(
-        initial_state(user_input),
-        config=config,
-    )
+    try:
+        result = get_travel_graph().invoke(
+            initial_state(user_input),
+            config=config,
+        )
+    except Exception as e:
+        err_msg = str(e).lower()
+        if "ssl" in err_msg or "closed" in err_msg or "connection" in err_msg:
+            from src.clients.checkpointer import reset_checkpointer
+            from src.graph.graph import _compiled_graph
+            reset_checkpointer()
+            _compiled_graph.cache_clear()
+            # Retry once with refreshed connection pool
+            result = get_travel_graph().invoke(
+                initial_state(user_input),
+                config=config,
+            )
+        else:
+            raise
 
     final_answer = result["messages"][-1].content
 

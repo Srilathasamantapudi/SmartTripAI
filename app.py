@@ -109,6 +109,25 @@ async def home(request: Request):
     )
 
 
+@app.get("/login", response_class=HTMLResponse)
+async def login_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="login.html",
+        context={"mode": "login"}
+    )
+
+
+@app.get("/signup", response_class=HTMLResponse)
+async def signup_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="login.html",
+        context={"mode": "signup"}
+    )
+
+
+
 # =========================
 # Credentials
 # =========================
@@ -273,11 +292,10 @@ async def favicon():
 
 
 if __name__ == "__main__":
-    # Defaults suit local development. In Docker, HOST is set to 0.0.0.0
-    # so the port is reachable from outside the container.
+    import uvicorn
     uvicorn.run(
         "app:app",
         host=os.getenv("HOST", "127.0.0.1"),
         port=int(os.getenv("PORT", "8000")),
-        reload=os.getenv("RELOAD", "true").lower() not in ("false", "0", "no")
+        reload=os.getenv("RELOAD", "true").lower() not in ("false", "0", "no"),
     )
