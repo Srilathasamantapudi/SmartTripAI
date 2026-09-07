@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartTrip AI - Complete Technical Documentation & Presentation Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-light: #eff6ff;
+      --secondary: #0f172a;
+      --accent: #0ea5e9;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --surface: #ffffff;
+      --surface-subtle: #f8fafc;
+      --border: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-light: #64748b;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f1f5f9;
+      color: var(--text-main);
+      line-height: 1.6;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Fixed Screen Header / Action Bar */
+    .screen-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(12px);
+      color: white;
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+
+    .screen-header .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+
+    .screen-header .brand span {
+      background: linear-gradient(135deg, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .print-btn {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      border: none;
+      padding: 9px 18px;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+    }
+
+    .print-btn:hover {
+      background: #1e40af;
+      transform: translateY(-1px);
+    }
+
+    /* Main Container */
+    .document-wrapper {
+      max-width: 960px;
+      margin: 32px auto;
+      background: var(--surface);
+      padding: 56px 64px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+    }
+
+    /* Document Title Block */
+    .doc-hero {
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 32px;
+      margin-bottom: 40px;
+    }
+
+    .doc-badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 5px 12px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+      border: 1px solid #bfdbfe;
+    }
+
+    h1.doc-title {
+      font-size: 2.35rem;
+      font-weight: 800;
+      line-height: 1.25;
+      color: var(--secondary);
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+
+    .doc-subtitle {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      background: var(--surface-subtle);
+      padding: 16px 20px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+    }
+
+    .meta-item {
+      font-size: 0.85rem;
+    }
+
+    .meta-item strong {
+      display: block;
+      color: var(--text-light);
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 2px;
+    }
+
+    /* Table of Contents */
+    .toc-card {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--primary);
+      border-radius: var(--radius-md);
+      padding: 24px 28px;
+      margin-bottom: 44px;
+    }
+
+    .toc-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--secondary);
+      margin-bottom: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .toc-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 24px;
+      list-style: none;
+    }
+
+    .toc-list a {
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .toc-list a:hover {
+      text-decoration: underline;
+    }
+
+    /* Headings */
+    h2.section-heading {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--secondary);
+      margin-top: 44px;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    h2.section-heading .num {
+      background: var(--secondary);
+      color: white;
+      font-size: 0.85rem;
+      padding: 3px 9px;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+    }
+
+    h3.sub-heading {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #1e293b;
+      margin-top: 24px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin-bottom: 14px;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    ul, ol {
+      margin-bottom: 16px;
+      padding-left: 22px;
+      color: var(--text-muted);
+    }
+
+    li {
+      margin-bottom: 6px;
+      line-height: 1.6;
+    }
+
+    li strong {
+      color: var(--text-main);
+    }
+
+    /* Cards & Callouts */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .callout {
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      margin: 18px 0;
+      border-left: 4px solid;
+    }
+
+    .callout-info {
+      background: #eff6ff;
+      border-color: var(--primary);
+      color: #1e40af;
+    }
+
+    .callout-success {
+      background: #f0fdf4;
+      border-color: var(--success);
+      color: #166534;
+    }
+
+    .callout-warning {
+      background: #fffbeb;
+      border-color: var(--warning);
+      color: #92400e;
+    }
+
+    /* Tables */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      margin: 20px 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    thead {
+      background: #f8fafc;
+      border-bottom: 2px solid var(--border);
+    }
+
+    th {
+      padding: 12px 16px;
+      font-weight: 600;
+      color: var(--secondary);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: #fcfcfd;
+    }
+
+    /* Code Blocks */
+    pre, code {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    code {
+      background: #f1f5f9;
+      color: #0f172a;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.85em;
+      border: 1px solid #e2e8f0;
+    }
+
+    pre {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 18px 20px;
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      margin: 18px 0;
+      border: 1px solid #1e293b;
+    }
+
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      border: none;
+      font-size: inherit;
+    }
+
+    /* Diagram visual block */
+    .diagram-box {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: var(--radius-md);
+      padding: 24px;
+      margin: 20px 0;
+      color: #f8fafc;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      overflow-x: auto;
+      line-height: 1.4;
+    }
+
+    .diagram-box .flow-node {
+      display: inline-block;
+      background: #1e293b;
+      border: 1px solid #3b82f6;
+      border-radius: 6px;
+      padding: 8px 14px;
+      margin: 4px;
+      color: #60a5fa;
+      font-weight: 600;
+    }
+
+    .diagram-box .flow-arrow {
+      color: #94a3b8;
+      font-weight: 700;
+      margin: 0 4px;
+    }
+
+    /* Grid layout for agents */
+    .agent-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .agent-card {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      transition: transform 0.2s ease;
+    }
+
+    .agent-card .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .agent-card .icon {
+      font-size: 1.4rem;
+    }
+
+    .agent-card .title {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--secondary);
+    }
+
+    .agent-card .tool-badge {
+      font-size: 0.72rem;
+      background: #e0e7ff;
+      color: #4338ca;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+
+    /* Print Specific Rules */
+    @media print {
+      body {
+        background: #ffffff !important;
+        font-size: 9.5pt !important;
+        line-height: 1.45 !important;
+        color: #000000 !important;
+      }
+
+      .no-print, .screen-header {
+        display: none !important;
+      }
+
+      .document-wrapper {
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+      }
+
+      .page-break {
+        page-break-before: always !important;
+        break-before: page !important;
+      }
+
+      .avoid-break, .agent-card, .card, .table-container, pre, .diagram-box {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      h2.section-heading {
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+        margin-top: 24pt !important;
+        border-bottom: 1.5pt solid #cbd5e1 !important;
+      }
+
+      h3.sub-heading {
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+      }
+
+      pre {
+        background: #f8fafc !important;
+        color: #0f172a !important;
+        border: 1pt solid #cbd5e1 !important;
+      }
+
+      .diagram-box {
+        background: #f8fafc !important;
+        color: #0f172a !important;
+        border: 1pt solid #cbd5e1 !important;
+      }
+
+      .diagram-box .flow-node {
+        background: #e2e8f0 !important;
+        color: #1e3a8a !important;
+        border: 1pt solid #93c5fd !important;
+      }
+
+      .diagram-box .flow-arrow {
+        color: #334155 !important;
+      }
+
+      a {
+        text-decoration: none !important;
+        color: #0f172a !important;
+      }
+
+      @page {
+        size: A4 portrait;
+        margin: 15mm 15mm 15mm 15mm;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Screen Floating Top Bar -->
+  <header class="screen-header no-print">
+    <div class="brand">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #38bdf8;">
+        <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
+      </svg>
+      SmartTrip AI <span>Technical Presentation & Documentation</span>
+    </div>
+    <button class="print-btn" onclick="window.print()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 6 2 18 2 18 9"></polyline>
+        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+        <rect x="6" y="14" width="12" height="8"></rect>
+      </svg>
+      Print / Save as PDF
+    </button>
+  </header>
+
+  <!-- Document Body -->
+  <main class="document-wrapper">
+
+    <!-- Document Header -->
+    <div class="doc-hero">
+      <div class="doc-badge">Project Technical Whitepaper & Viva Presentation Dossier</div>
+      <h1 class="doc-title">SmartTrip AI: Autonomous Multi-Agent Travel Orchestration Platform</h1>
+      <p class="doc-subtitle">A LangGraph-powered stateful agentic system synthesizing live flight routes, accommodations, meteorological forecasts, and itinerary scheduling via Model Context Protocol (MCP) and Groq LPU inference.</p>
+      
+      <div class="meta-grid">
+        <div class="meta-item">
+          <strong>System Name</strong>
+          SmartTrip AI (TravelBrain)
+        </div>
+        <div class="meta-item">
+          <strong>Architecture Paradigm</strong>
+          Stateful Multi-Agent System (MAS)
+        </div>
+        <div class="meta-item">
+          <strong>Core Frameworks</strong>
+          LangGraph • FastAPI • Groq • MCP
+        </div>
+        <div class="meta-item">
+          <strong>Persistence</strong>
+          Neon Serverless PostgreSQL (PostgresSaver)
+        </div>
+      </div>
+    </div>
+
+    <!-- Table of Contents -->
+    <div class="toc-card avoid-break">
+      <div class="toc-title">Table of Contents</div>
+      <ul class="toc-list">
+        <li><a href="#section-1">1. Project Overview & Executive Summary</a></li>
+        <li><a href="#section-2">2. Problem Statement & Motivation</a></li>
+        <li><a href="#section-3">3. System Objectives</a></li>
+        <li><a href="#section-4">4. Key Features & Capabilities</a></li>
+        <li><a href="#section-5">5. System Architecture & Workflow</a></li>
+        <li><a href="#section-6">6. End-to-End Execution Lifecycle</a></li>
+        <li><a href="#section-7">7. Multi-Agent & Agentic AI Architecture</a></li>
+        <li><a href="#section-8">8. Detailed Agent Roles & Data Sources</a></li>
+        <li><a href="#section-9">9. Technology Stack & Exact Libraries</a></li>
+        <li><a href="#section-10">10. External APIs & Selection Rationale</a></li>
+        <li><a href="#section-11">11. Database & Checkpointing Architecture</a></li>
+        <li><a href="#section-12">12. Frontend & Backend Implementation</a></li>
+        <li><a href="#section-13">13. Critical Code Logic & Algorithms</a></li>
+        <li><a href="#section-14">14. User Interface Design & Aesthetics</a></li>
+        <li><a href="#section-15">15. Input & Output Data Contracts</a></li>
+        <li><a href="#section-16">16. Testing, Error Handling & Diagnostics</a></li>
+        <li><a href="#section-17">17. Key Advantages & Innovation</a></li>
+        <li><a href="#section-18">18. Limitations & Edge Cases</a></li>
+        <li><a href="#section-19">19. Future Scope & Roadmap</a></li>
+        <li><a href="#section-20">20. Deployment & DevOps Architecture</a></li>
+      </ul>
+    </div>
+
+    <!-- Section 1 -->
+    <section id="section-1" class="avoid-break">
+      <h2 class="section-heading"><span class="num">01</span> Project Overview & Executive Summary</h2>
+      <p><strong>SmartTrip AI</strong> (formerly TravelBrain) is an autonomous, multi-agent travel intelligence application engineered to transform unstructured natural language travel queries into comprehensive, verifiable, and executable travel itineraries within 30 to 60 seconds.</p>
+      <p>Traditional travel planning suffers from severe cognitive load and information fragmentation: users must manually cross-reference 5 to 8 separate browser tabs covering flight aggregators, hotel search engines, weather forecast services, local tourism blogs, and budgeting spreadsheets. SmartTrip AI consolidates this entire research lifecycle into a single conversation.</p>
+      <p>The platform executes a sequential, deterministic multi-agent state graph via <strong>LangGraph</strong>. Rather than delegating the entire request to a single monolithic LLM prompt—which frequently hallucinates flights, stale pricing, and conflicting schedules—SmartTrip AI deploys five specialized AI agents. Each agent handles a targeted subtask grounded in real-world APIs through the <strong>Model Context Protocol (MCP)</strong>.</p>
+    </section>
+
+    <!-- Section 2 -->
+    <section id="section-2" class="avoid-break">
+      <h2 class="section-heading"><span class="num">02</span> Problem Statement & Motivation</h2>
+      <p>The modern consumer travel booking experience is characterized by friction, fragmentation, and cognitive fatigue:</p>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Dimension</th>
+              <th>The Current Problem</th>
+              <th>SmartTrip AI Solution</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Fragmented Information</strong></td>
+              <td>Travelers juggle disparate platforms (Skyscanner, Booking.com, Google Maps, OpenWeather, Excel).</td>
+              <td><strong>Single Unified Interface:</strong> A natural language prompt or visual builder kicks off all research simultaneously.</td>
+            </tr>
+            <tr>
+              <td><strong>Cognitive Synchronization</strong></td>
+              <td>Manually aligning flight arrival times with hotel check-in hours and weather-dependent outdoor excursions.</td>
+              <td><strong>Stateful Cross-Referencing:</strong> Downstream itinerary agents read upstream flight and weather state data automatically.</td>
+            </tr>
+            <tr>
+              <td><strong>LLM Hallucinations</strong></td>
+              <td>Generic LLMs (e.g., vanilla ChatGPT) invent non-existent flights, decommissioned airlines, and closed attractions.</td>
+              <td><strong>Grounded Tool Verification:</strong> Live data queries via AviationStack, Tavily Search, and OpenWeatherMap APIs.</td>
+            </tr>
+            <tr>
+              <td><strong>Context Loss & Volatility</strong></td>
+              <td>Browser tab refreshes lose research progress; follow-up questions require re-entering all trip constraints.</td>
+              <td><strong>Postgres Graph Checkpointing:</strong> Every state transition is checkpointed to PostgreSQL for seamless conversational continuity.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section 3 -->
+    <section id="section-3" class="avoid-break">
+      <h2 class="section-heading"><span class="num">03</span> System Objectives</h2>
+      <ul>
+        <li><strong>Autonomous Task Decomposition:</strong> Automatically parse unstructured natural language input into discrete domain parameters: origin, destination, duration, party size, budget tier, and interests.</li>
+        <li><strong>Deterministic Agent Coordination:</strong> Enforce strict Directed Acyclic Graph (DAG) state transitions to prevent race conditions and guarantee logical synthesis.</li>
+        <li><strong>Real-World Grounding via MCP:</strong> Connect agents directly to live external tools using the open Model Context Protocol.</li>
+        <li><strong>Ultra-Low Latency Inference:</strong> Leverage Groq Cloud LPUs (Language Processing Units) running Llama 3 / Mixtral models to achieve 300+ tokens/second, bringing 5-agent sequential execution under 60 seconds.</li>
+        <li><strong>Stateful Conversational Memory:</strong> Support persistent thread sessions allowing users to pause, revisit, or refine their itineraries without data loss.</li>
+        <li><strong>Lightweight, Zero-Build Frontend:</strong> Deliver a modern, high-performance UI using pure Vanilla JavaScript (ES6+) and CSS custom properties without the bundle bloat of heavy front-end frameworks.</li>
+      </ul>
+    </section>
+
+    <div class="page-break"></div>
+
+    <!-- Section 4 -->
+    <section id="section-4" class="avoid-break">
+      <h2 class="section-heading"><span class="num">04</span> Key Features & Capabilities</h2>
+      <div class="agent-grid">
+        <div class="agent-card">
+          <div class="header">
+            <span class="icon">💬</span>
+            <div class="title">Conversational Chat Interface</div>
+          </div>
+          <p>Accepts natural language prompts such as <em>"Plan a 7-day budget trip to Tokyo for two in November"</em>. No rigid syntax required.</p>
+        </div>
+
+        <div class="agent-card">
+          <div class="header">
+            <span class="icon">🎛️</span>
+            <div class="title">Interactive Trip Builder</div>
+          </div>
+          <p>Collapsible drawer with sliders, date pickers, budget tier chips, and activity preferences that automatically composes optimized prompts.</p>
+        </div>
+
+        <div class="agent-card">
+          <div class="header">
+            <span class="icon">📑</span>
+            <div class="title">5-Tab Dossier Organization</div>
+          </div>
+          <p>Structured output tabs: <strong>Plan Overview</strong>, <strong>Itinerary</strong>, <strong>Flights</strong>, <strong>Hotels</strong>, and <strong>Weather</strong> with integrated budget estimates.</p>
+        </div>
+
+        <div class="agent-card">
+          <div class="header">
+            <span class="icon">✏️</span>
+            <div class="title">Inline Prompt Editing</div>
+          </div>
+          <p>Users can edit any past query directly in the chat bubble using <strong>Edit</strong>, <strong>Save</strong>, or <strong>Cancel</strong> buttons without triggering unintended regenerations.</p>
+        </div>
+
+        <div class="agent-card">
+          <div class="header">
+            <span class="icon">💾</span>
+            <div class="title">Saved Guides System</div>
+          </div>
+          <p>One-click <strong>Save Guide</strong> action on generated reports. Dedicated topbar bookmark icon opens a modal dialog to revisit saved plans anytime.</p>
+        </div>
+
+        <div class="agent-card">
+          <div class="header">
+            <span class="icon">🌓</span>
+            <div class="title">Theme & Export Engine</div>
+          </div>
+          <p>Smooth glassmorphic dark/light mode toggle with CSS tokens. Export options include direct clipboard copy, Markdown download, and print-to-PDF.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5 -->
+    <section id="section-5" class="avoid-break">
+      <h2 class="section-heading"><span class="num">05</span> System Architecture & Workflow</h2>
+      <p>The system is architected as an asynchronous, layered client-server application powered by a LangGraph Directed Acyclic Graph (DAG):</p>
+      
+      <div class="diagram-box">
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                        SmartTrip AI System Architecture Flow                           │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+
+ [ USER BROWSER ] ─── (HTTP POST /api/travel) ───► [ FASTAPI ASGI SERVER (Uvicorn) ]
+        ▲                                                          │
+        │                                             [ Session Cookie Auth ]
+        │                                                          ▼
+        │                                         [ Runner: run_travel_agent() ]
+        │                                                          │
+        │                                             [ TravelState Initialization ]
+        │                                                          ▼
+        │        ┌──────────────────────────────────────────────────────────────────────┐
+        │        │                  LangGraph StateGraph Execution Pipeline             │
+        │        │                                                                      │
+        │        │  START ──► [ 1. Flight Agent ] ──► (AviationStack MCP / airportsdata) │
+        │        │                   │                                                  │
+        │        │                   ▼                                                  │
+        │        │            [ 2. Hotel Agent ] ───► (Tavily Search MCP Engine)        │
+        │        │                   │                                                  │
+        │        │                   ▼                                                  │
+        │        │            [ 3. Weather Agent ] ─► (OpenWeatherMap MCP API)          │
+        │        │                   │                                                  │
+        │        │                   ▼                                                  │
+        │        │            [ 4. Itinerary Agent ] ─► (Groq LPU LLM Synthesis)        │
+        │        │                   │                                                  │
+        │        │                   ▼                                                  │
+        │        │            [ 5. Final Agent ] ───► (Markdown Tab Formatter)          │
+        │        │                   │                                                  │
+        │        │                   ▼                                                  │
+        │        │                  END                                                 │
+        │        └───────────────────┬──────────────────────────────────────────────────┘
+        │                            │
+        │              [ Checkpoint State to Database ]
+        │                            ▼
+        │             [ Neon Serverless PostgreSQL ]
+        │                            │
+        └────── (JSON Response) ─────┴──────── [ Redis Cache (TTL Key-Value) ]
+      </div>
+    </section>
+
+    <!-- Section 6 -->
+    <section id="section-6" class="avoid-break">
+      <h2 class="section-heading"><span class="num">06</span> End-to-End Execution Lifecycle</h2>
+      <ol>
+        <li><strong>Client Input Dispatch:</strong> The user enters a request into the chat bar or uses the Trip Builder drawer. The client sends a <code>POST /api/travel</code> JSON payload with <code>message</code> and optional <code>thread_id</code>.</li>
+        <li><strong>Session Credential Resolution:</strong> In <code>app.py</code>, the server extracts the <code>session_id</code> cookie. If user-supplied API keys exist in memory, they are activated via Python's <code>ContextVar</code>; otherwise, the server's default <code>.env</code> keys are scoped for this request.</li>
+        <li><strong>Graph State Initialization:</strong> <code>src/graph/runner.py</code> initializes <code>TravelState</code> containing the user query, an empty message list, and blank string slots for agent findings.</li>
+        <li><strong>Node 1 - Flight Execution:</strong> <code>flight_agent.py</code> queries the AviationStack MCP server for airport and airline data, combines it with the user prompt, invokes the Groq LLM, and writes verified flight details into <code>state["flight_results"]</code>.</li>
+        <li><strong>Node 2 - Hotel Discovery:</strong> <code>hotel_agent.py</code> formulates a targeted search query and executes a web search via the Tavily MCP client, writing central accommodation choices into <code>state["hotel_results"]</code>.</li>
+        <li><strong>Node 3 - Meteorological Analysis:</strong> <code>weather_agent.py</code> parses the destination city using <code>destination.py</code>, calls OpenWeatherMap MCP endpoints for current and 5-day forecasts, and populates <code>state["weather_results"]</code>.</li>
+        <li><strong>Node 4 - Cross-Domain Itinerary Generation:</strong> <code>itinerary_agent.py</code> passes all accumulated state data to Groq LLM, producing a synchronized, realistic day-by-day itinerary.</li>
+        <li><strong>Node 5 - Final Synthesis & Budgeting:</strong> <code>final_agent.py</code> generates the user-facing Markdown payload with tabs and an estimated financial breakdown.</li>
+        <li><strong>Persistence & Client Render:</strong> The compiled LangGraph checkpointer persists the final state to Neon PostgreSQL. FastAPI returns the JSON response, and the front-end DOM parser dynamically renders the interactive tabs.</li>
+      </ol>
+    </section>
+
+    <div class="page-break"></div>
+
+    <!-- Section 7 -->
+    <section id="section-7" class="avoid-break">
+      <h2 class="section-heading"><span class="num">07</span> Multi-Agent & Agentic AI Architecture</h2>
+      <p>SmartTrip AI is built upon the core tenets of <strong>Agentic AI</strong> and <strong>Multi-Agent Systems (MAS)</strong>:</p>
+      <ul>
+        <li><strong>Context Window Isolation:</strong> Standard LLMs suffer from "lost in the middle" phenomena when prompts exceed a few thousand tokens. By segregating research into discrete nodes, each agent operates with a lightweight, hyper-focused prompt context.</li>
+        <li><strong>The State Accumulator Pattern:</strong> Agents do not communicate through messy ad-hoc message passing. Instead, they read from and write to a strongly typed state container (<code>TravelState</code>) defined in <code>src/graph/state.py</code>.</li>
+        <li><strong>Model Context Protocol (MCP) Integration:</strong> The architecture implements Anthropic's open Model Context Protocol to decouple agent reasoning from tool implementation. Tools can run as local child processes via stdio or as remote HTTP services without modifying agent prompts.</li>
+        <li><strong>Deterministic Directed Acyclic Graph (DAG):</strong> The execution flow is strictly governed by LangGraph's <code>StateGraph</code>, guaranteeing that dependencies (e.g., flight and weather data) are fully resolved before itinerary creation begins.</li>
+      </ul>
+    </section>
+
+    <!-- Section 8 -->
+    <section id="section-8" class="avoid-break">
+      <h2 class="section-heading"><span class="num">08</span> Detailed Agent Roles & Data Sources</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Agent Name</th>
+              <th>Source File</th>
+              <th>External Tool / Protocol</th>
+              <th>Specific Responsibility</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Flight Agent</strong></td>
+              <td><code>src/agents/flight_agent.py</code></td>
+              <td>AviationStack MCP Server & <code>airportsdata</code></td>
+              <td>Resolves origin/destination IATA codes, verifies active carriers on the route, estimates flight duration and fare brackets.</td>
+            </tr>
+            <tr>
+              <td><strong>Hotel Agent</strong></td>
+              <td><code>src/agents/hotel_agent.py</code></td>
+              <td>Tavily Search MCP Engine</td>
+              <td>Executes live web searches for hotels aligned with destination, party size, and budget tier (budget, mid-range, luxury).</td>
+            </tr>
+            <tr>
+              <td><strong>Weather Agent</strong></td>
+              <td><code>src/agents/weather_agent.py</code></td>
+              <td>OpenWeatherMap MCP Server</td>
+              <td>Fetches current temperatures and multi-day meteorological forecasts; provides clothing and packing recommendations.</td>
+            </tr>
+            <tr>
+              <td><strong>Itinerary Agent</strong></td>
+              <td><code>src/agents/itinerary_agent.py</code></td>
+              <td>Groq LPU LLM</td>
+              <td>Combines flight arrival/departure times, hotel locations, and weather conditions into a realistic, chronologically sound day-by-day plan.</td>
+            </tr>
+            <tr>
+              <td><strong>Final Agent</strong></td>
+              <td><code>src/agents/final_agent.py</code></td>
+              <td>Groq LPU LLM</td>
+              <td>Synthesizes all agent outputs into tabbed Markdown format, validates estimated costs, and produces the complete dossier.</td>
+            </tr>
+            <tr>
+              <td><strong>Destination Extractor</strong></td>
+              <td><code>src/agents/destination.py</code></td>
+              <td>Deterministic NLP / Regex</td>
+              <td>Extracts target destination city strings from complex conversational sentences for tool invocation.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section 9 -->
+    <section id="section-9" class="avoid-break">
+      <h2 class="section-heading"><span class="num">09</span> Technology Stack & Exact Libraries</h2>
+      <p>All dependencies are strictly managed via <strong>Astral uv</strong> and declared in <code>pyproject.toml</code>:</p>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Package Name</th>
+              <th>Version</th>
+              <th>Role & Architectural Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>langgraph</code></td>
+              <td>&gt;=1.2.11</td>
+              <td>Core DAG orchestration framework; manages node transitions, state compilation, and checkpoints.</td>
+            </tr>
+            <tr>
+              <td><code>langchain</code> / <code>langchain-groq</code></td>
+              <td>&gt;=1.3.17 / &gt;=1.1.3</td>
+              <td>High-level abstractions for chat prompts, messages, and Groq Cloud LPU API integration.</td>
+            </tr>
+            <tr>
+              <td><code>mcp</code> / <code>langchain-mcp-adapters</code></td>
+              <td>&gt;=1.29.1 / &gt;=0.3.2</td>
+              <td>Official Model Context Protocol implementation for stdio tool execution.</td>
+            </tr>
+            <tr>
+              <td><code>langgraph-checkpoint-postgres</code></td>
+              <td>&gt;=3.1.2</td>
+              <td>Native PostgreSQL checkpoint saver for saving and resuming conversation graphs.</td>
+            </tr>
+            <tr>
+              <td><code>psycopg[binary]</code> / <code>psycopg-pool</code></td>
+              <td>&gt;=3.3.4 / &gt;=3.3.1</td>
+              <td>High-performance PostgreSQL 3 async driver and connection pooler.</td>
+            </tr>
+            <tr>
+              <td><code>fastapi</code> / <code>uvicorn</code></td>
+              <td>&gt;=0.141.1 / &gt;=0.52.4</td>
+              <td>Asynchronous ASGI web application framework and high-throughput web server.</td>
+            </tr>
+            <tr>
+              <td><code>jinja2</code></td>
+              <td>&gt;=3.1.6</td>
+              <td>Server-side HTML template rendering engine.</td>
+            </tr>
+            <tr>
+              <td><code>nest-asyncio</code></td>
+              <td>&gt;=1.6.0</td>
+              <td>Enables re-entrant event loops, allowing synchronous LangGraph nodes to invoke async MCP tools.</td>
+            </tr>
+            <tr>
+              <td><code>tavily</code></td>
+              <td>&gt;=1.1.0</td>
+              <td>Search API client designed specifically for AI agents to retrieve clean markdown web data.</td>
+            </tr>
+            <tr>
+              <td><code>airportsdata</code> / <code>pycountry</code></td>
+              <td>&gt;=20260803 / &gt;=26.2.16</td>
+              <td>Offline global airport dataset with over 28,000 IATA/ICAO codes and ISO country data.</td>
+            </tr>
+            <tr>
+              <td><code>redis</code></td>
+              <td>&gt;=5.2.1</td>
+              <td>High-speed caching client for storing external API responses with custom TTLs.</td>
+            </tr>
+            <tr>
+              <td><code>python-dotenv</code> / <code>requests</code></td>
+              <td>&gt;=1.2.3 / &gt;=2.34.2</td>
+              <td>Environment configuration management and HTTP network request handling.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="page-break"></div>
+
+    <!-- Section 10 -->
+    <section id="section-10" class="avoid-break">
+      <h2 class="section-heading"><span class="num">10</span> External APIs & Selection Rationale</h2>
+      <ul>
+        <li><strong>Groq Cloud API (LPU Inference):</strong> Groq's custom Language Processing Units process LLM tokens at 300–500 tokens/sec. In a sequential multi-agent architecture with multiple LLM calls, traditional cloud APIs can introduce 30–60 seconds of waiting; Groq reduces LLM inference time to under 5 seconds total.</li>
+        <li><strong>AviationStack API:</strong> Provides real-time and historical global flight data, airport registries, and carrier operations across over 13,000 airlines worldwide.</li>
+        <li><strong>Tavily Search API:</strong> Unlike traditional search APIs that return messy HTML filled with ads, Tavily returns pre-filtered, markdown-formatted text optimized for LLM comprehension and accurate entity extraction.</li>
+        <li><strong>OpenWeatherMap API:</strong> High-reliability meteorological service delivering live temperatures, weather descriptions, precipitation likelihood, and 5-day / 3-hour forecasts globally.</li>
+      </ul>
+    </section>
+
+    <!-- Section 11 -->
+    <section id="section-11" class="avoid-break">
+      <h2 class="section-heading"><span class="num">11</span> Database & Checkpointing Architecture</h2>
+      <p>SmartTrip AI utilizes <strong>Neon Serverless PostgreSQL</strong> paired with LangGraph's <code>PostgresSaver</code>:</p>
+      <ul>
+        <li><strong>State Checkpointing:</strong> After every agent node completes execution, LangGraph serializes the full <code>TravelState</code> dictionary and commits a binary snapshot to PostgreSQL along with the <code>thread_id</code> and <code>checkpoint_id</code>.</li>
+        <li><strong>Conversational Continuity:</strong> When a user asks a follow-up question (e.g., <em>"Make Day 3 focus more on art museums"</em>), the graph resumes from the existing checkpoint rather than re-running the flight, hotel, and weather agents from scratch.</li>
+        <li><strong>Credential Scoping via ContextVar:</strong> User-supplied API keys and database URLs are stored using Python's <code>contextvars.ContextVar</code>. This guarantees session isolation: keys are never saved to disk and cannot leak across concurrent user threads.</li>
+        <li><strong>Tiered TTL Caching:</strong> Integrated Redis caching prevents redundant API billing and accelerates repeat queries:
+          <ul>
+            <li>Airport & Airline reference data: <strong>7 days TTL</strong></li>
+            <li>Hotel search web results: <strong>6 hours TTL</strong></li>
+            <li>Weather forecast data: <strong>1 hour TTL</strong></li>
+            <li>Current weather conditions: <strong>10 minutes TTL</strong></li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Section 12 -->
+    <section id="section-12" class="avoid-break">
+      <h2 class="section-heading"><span class="num">12</span> Frontend & Backend Implementation</h2>
+      <p>The system is intentionally built without the complexity of heavy JavaScript frameworks:</p>
+      <ul>
+        <li><strong>FastAPI Backend (<code>app.py</code>):</strong> Exposes clean, typed REST endpoints with automatic OpenAPI documentation, CORS middleware, and Jinja2 template rendering.</li>
+        <li><strong>Modular Vanilla JavaScript (<code>frontend/static/js/app.js</code>):</strong> Lightweight, zero-compile ES6+ code handling dynamic DOM rendering, tab switching, theme toggling, inline prompt editing, and modal management.</li>
+        <li><strong>CSS Design System (<code>frontend/static/css/styles.css</code>):</strong> A bespoke design system utilizing CSS custom properties (variables), responsive flexbox and grid layouts, and glassmorphic translucent layers for a modern aesthetic.</li>
+      </ul>
+    </section>
+
+    <!-- Section 13 -->
+    <section id="section-13" class="avoid-break">
+      <h2 class="section-heading"><span class="num">13</span> Critical Code Logic & Algorithms</h2>
+
+      <h3 class="sub-heading">1. Directed Acyclic Graph (DAG) Assembly (<code>src/graph/graph.py</code>)</h3>
+      <pre><code>def build_graph() -> StateGraph:
+    graph = StateGraph(TravelState)
+
+    # Register individual agent nodes
+    graph.add_node("flight_agent", flight_agent)
+    graph.add_node("hotel_agent", hotel_agent)
+    graph.add_node("weather_agent", weather_agent)
+    graph.add_node("itinerary_agent", itinerary_agent)
+    graph.add_node("final_agent", final_agent)
+
+    # Define deterministic sequential workflow
+    graph.add_edge(START, "flight_agent")
+    graph.add_edge("flight_agent", "hotel_agent")
+    graph.add_edge("hotel_agent", "weather_agent")
+    graph.add_edge("weather_agent", "itinerary_agent")
+    graph.add_edge("itinerary_agent", "final_agent")
+    graph.add_edge("final_agent", END)
+
+    return graph</code></pre>
+
+      <h3 class="sub-heading">2. Event Loop Bridging (<code>nest_asyncio</code>)</h3>
+      <p>Because FastAPI operates inside an asynchronous <code>uvicorn</code> event loop while LangGraph nodes execute synchronous tool calls and child processes, <code>nest_asyncio.apply()</code> is used to enable re-entrant event loops, eliminating thread lockups.</p>
+
+      <h3 class="sub-heading">3. Automatic Database Credential Fallback Algorithm</h3>
+      <p>If a client cookie carries an expired or malformed database credential, <code>get_travel_graph()</code> intercepts the authentication error and smoothly falls back to the server's primary <code>.env</code> database URL, preventing crashes.</p>
+    </section>
+
+    <div class="page-break"></div>
+
+    <!-- Section 14 -->
+    <section id="section-14" class="avoid-break">
+      <h2 class="section-heading"><span class="num">14</span> User Interface Design & Aesthetics</h2>
+      <div class="callout callout-info">
+        <strong>Modern UI Philosophy:</strong> Designed to look like a premium SaaS dashboard with glassmorphism, smooth micro-animations, curated dark/light color palettes, and responsive layouts.
+      </div>
+      <ul>
+        <li><strong>Left Sidebar:</strong> Trip history with auto-generated session titles, New Trip button, theme toggle, and live API connection status indicator.</li>
+        <li><strong>Top Action Bar:</strong> Site branding (<strong>SmartTrip AI</strong>), dedicated <strong>Saved Guides</strong> modal launcher, and Settings icon.</li>
+        <li><strong>Central Chat Canvas:</strong> Conversational message bubbles featuring inline ✏️ <strong>Edit</strong> buttons for past prompts.</li>
+        <li><strong>Result Card Tabs:</strong> Clean tab navigation allowing instant toggling between <code>Plan Overview</code>, <code>Itinerary</code>, <code>Flights</code>, <code>Hotels</code>, and <code>Weather</code>, plus a 💾 <strong>Save Guide</strong> bookmark action.</li>
+        <li><strong>Collapsible Trip Builder:</strong> Floating drawer with range sliders, dates, and interactive selection chips.</li>
+      </ul>
+    </section>
+
+    <!-- Section 15 -->
+    <section id="section-15" class="avoid-break">
+      <h2 class="section-heading"><span class="num">15</span> Input & Output Data Contracts</h2>
+      <h3 class="sub-heading">Input Contract (JSON Payload to <code>POST /api/travel</code>)</h3>
+      <pre><code>{
+  "message": "Plan a 10-day trip to Italy from New York in May, mid-range budget",
+  "thread_id": "user_7b3a9c42de8f"
+}</code></pre>
+
+      <h3 class="sub-heading">Output Contract (JSON Response from <code>POST /api/travel</code>)</h3>
+      <pre><code>{
+  "success": true,
+  "thread_id": "user_7b3a9c42de8f",
+  "answer": "## Comprehensive Italy Travel Dossier\n\n### Budget Breakdown...",
+  "flight_results": "### Recommended Flights: JFK to FCO via ITA Airways...",
+  "hotel_results": "### Curated Accommodations in Rome & Florence...",
+  "weather_results": "### Spring Weather: 18°C-23°C, mild conditions...",
+  "itinerary": "### Day 1: Colosseum & Trastevere\n### Day 2: Vatican Museums...",
+  "llm_calls": 4
+}</code></pre>
+    </section>
+
+    <!-- Section 16 -->
+    <section id="section-16" class="avoid-break">
+      <h2 class="section-heading"><span class="num">16</span> Testing, Error Handling & Diagnostics</h2>
+      <ul>
+        <li><strong>Live Health Check (<code>GET /health</code>):</strong> Inspects backend readiness, Groq API connectivity, PostgreSQL pool availability, and Redis cache health.</li>
+        <li><strong>Isolated Exception Handlers:</strong> Each agent wraps external MCP invocations in try/except blocks. If AviationStack hits a rate limit, the Flight Agent catches the exception and outputs graceful guidance rather than crashing the entire workflow.</li>
+        <li><strong>Pre-Flight Credential Validation:</strong> When a user updates API keys in Settings, <code>check_groq_api_key()</code> and <code>check_database_url()</code> test the credentials against real servers before accepting them.</li>
+      </ul>
+    </section>
+
+    <!-- Section 17 & 18 -->
+    <section id="section-17" class="avoid-break">
+      <h2 class="section-heading"><span class="num">17</span> Key Advantages & Innovation</h2>
+      <ol>
+        <li><strong>Elimination of Hallucinations:</strong> Every flight, hotel, and weather item is verified via external APIs rather than hallucinated from outdated static training weights.</li>
+        <li><strong>Near-Instant Generation:</strong> Groq LPU acceleration completes multi-agent workflows in 30–60 seconds, compared to hours of manual research.</li>
+        <li><strong>Conversational Continuity:</strong> State checkpointing in Neon PostgreSQL allows users to modify trips iteratively through natural follow-up questions.</li>
+        <li><strong>Zero-Bloat Architecture:</strong> Pure Python and Vanilla JavaScript eliminate thousands of unstable NPM packages.</li>
+      </ol>
+    </section>
+
+    <section id="section-18" class="avoid-break">
+      <h2 class="section-heading"><span class="num">18</span> Limitations & Edge Cases</h2>
+      <ul>
+        <li><strong>No Direct Booking Checkout:</strong> The system provides verified booking guidance and links, but does not process credit card transactions or issue airline tickets.</li>
+        <li><strong>Free-Tier API Rate Limits:</strong> Heavy concurrency can exceed the requests-per-minute limits of free-tier API keys.</li>
+        <li><strong>Airline Price Volatility:</strong> Airline pricing fluctuates continuously based on dynamic yield management; prices are presented as realistic fare brackets.</li>
+      </ul>
+    </section>
+
+    <!-- Section 19 & 20 -->
+    <section id="section-19" class="avoid-break">
+      <h2 class="section-heading"><span class="num">19</span> Future Scope & Roadmap</h2>
+      <ul>
+        <li><strong>Direct Booking APIs:</strong> Integrate Amadeus Enterprise, Sabre, and Booking.com APIs for one-click in-app reservations.</li>
+        <li><strong>Interactive Mapbox Integration:</strong> Render visual interactive maps plotting daily routes, attractions, and hotels.</li>
+        <li><strong>Real-Time Collaboration:</strong> WebSocket-powered multi-user planning allowing friends and families to plan itineraries together.</li>
+        <li><strong>Native Mobile Applications:</strong> Deploy lightweight cross-platform apps using Flutter or React Native.</li>
+      </ul>
+    </section>
+
+    <div class="page-break"></div>
+
+    <section id="section-20" class="avoid-break">
+      <h2 class="section-heading"><span class="num">20</span> Deployment & DevOps Architecture</h2>
+      <p>The application is production-ready and fully containerized:</p>
+      <ul>
+        <li><strong>Multi-Stage Dockerfile:</strong>
+          <ul>
+            <li><strong>Builder Stage:</strong> Uses <code>python:3.11-slim-bookworm</code> with official Astral <code>uv</code> binaries. Resolves dependencies into <code>/app/.venv</code> with bytecode pre-compilation.</li>
+            <li><strong>Runtime Stage:</strong> Copies the prepared virtualenv into a clean image, creates a secure non-root <code>appuser</code>, and configures a container health check:
+              <code>HEALTHCHECK CMD curl -f http://localhost:8000/health || exit 1</code>.
+            </li>
+          </ul>
+        </li>
+        <li><strong>Container Orchestration (<code>docker-compose.yml</code>):</strong> Orchestrates the FastAPI web container alongside an optional local Redis caching instance.</li>
+        <li><strong>Cloud Hosting Compatibility:</strong> Fully compatible with one-click PaaS deployment on <strong>Render</strong>, <strong>Railway</strong>, <strong>Fly.io</strong>, or <strong>AWS ECS</strong>.</li>
+      </ul>
+    </section>
+
+    <!-- Summary Presentation Table -->
+    <section class="avoid-break" style="margin-top: 40px; padding-top: 20px; border-top: 2px solid var(--border);">
+      <h3 class="sub-heading">Quick Reference / Viva Voce Summary Table</h3>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Aspect</th>
+              <th>Technical Implementation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Project Title</strong></td>
+              <td>SmartTrip AI (formerly TravelBrain AI)</td>
+            </tr>
+            <tr>
+              <td><strong>Architecture</strong></td>
+              <td>Stateful Multi-Agent System (LangGraph StateGraph DAG)</td>
+            </tr>
+            <tr>
+              <td><strong>Inference Engine</strong></td>
+              <td>Groq Cloud LPU (300+ tokens/sec, Llama 3 / Mixtral)</td>
+            </tr>
+            <tr>
+              <td><strong>Tools & Protocol</strong></td>
+              <td>Model Context Protocol (MCP) connecting AviationStack, Tavily, and OpenWeatherMap</td>
+            </tr>
+            <tr>
+              <td><strong>Database</strong></td>
+              <td>Neon Serverless PostgreSQL with <code>PostgresSaver</code> checkpointer</td>
+            </tr>
+            <tr>
+              <td><strong>Backend Stack</strong></td>
+              <td>FastAPI + Uvicorn + Jinja2 + Python 3.11 + Astral uv</td>
+            </tr>
+            <tr>
+              <td><strong>Frontend Stack</strong></td>
+              <td>Vanilla JavaScript (ES6+) + Custom CSS Design Tokens (No heavy JS frameworks)</td>
+            </tr>
+            <tr>
+              <td><strong>Key Features</strong></td>
+              <td>Conversational planning, visual trip builder, 5-tab dossier, inline prompt editing, saved guides modal</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="text-align: center; color: var(--text-light); font-size: 0.85rem; margin-top: 24px;">
+        © 2026 SmartTrip AI • Generated for Academic Presentation, Viva Voce & Technical Documentation
+      </p>
+    </section>
+
+  </main>
+
+</body>
+</html>
