@@ -11,11 +11,7 @@ from pathlib import Path
 import certifi
 from dotenv import load_dotenv
 
-<<<<<<< HEAD
 load_dotenv(override=True)
-=======
-load_dotenv()
->>>>>>> 6139a41007e8ebd425a8fc868f356828dfc9dfcf
 
 
 # Windows / corporate networks need an explicit CA bundle for outbound TLS.
@@ -80,7 +76,7 @@ CACHE_ENABLED = (
 # whole life of the process.
 CACHE_RECONNECT_SECONDS = int(os.getenv("CACHE_RECONNECT_SECONDS", "60"))
 
-CACHE_KEY_PREFIX = os.getenv("CACHE_KEY_PREFIX", "travelbrain")
+CACHE_KEY_PREFIX = os.getenv("CACHE_KEY_PREFIX", "smarttrip")
 
 # TTLs in seconds, chosen to match how fast each source actually changes.
 CACHE_TTL_AIRPORTS = int(os.getenv("CACHE_TTL_AIRPORTS", str(7 * 24 * 3600)))

@@ -37,11 +37,7 @@ BASE_DIR = Path(__file__).resolve().parent
 FRONTEND_DIR = BASE_DIR / "frontend"
 
 app = FastAPI(
-<<<<<<< HEAD
     title="SmartTrip AI",
-=======
-    title="TravelBrain AI",
->>>>>>> 6139a41007e8ebd425a8fc868f356828dfc9dfcf
     description="LangGraph Multi-Agent Travel Planner with FastAPI Frontend",
     version="1.0.0"
 )
